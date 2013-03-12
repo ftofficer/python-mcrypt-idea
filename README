@@ -1,0 +1,47 @@
+This is the README file of python-mcrypt.
+
+Description
+-----------
+
+The python mcrypt module provides an interface for the mcrypt library.
+
+Mcrypt is a library which provides a uniform interface to several symmetric
+encryption algorithms. It is intended to have a simple interface to access
+encryption algorithms in ofb, cbc, cfb, ecb and stream modes. The algorithms it
+supports are DES, 3DES, RIJNDAEL, Twofish, IDEA, GOST, CAST-256, ARCFOUR,
+SERPENT, SAFER+, and more.
+
+Features
+--------
+
+The python-mcrypt module provides the following features:
+
+o  Free software (GNU Lesser General Public License).
+o  Support for Python newstyle classes, allowing subclassing.
+o  Comprehensive unitttests.
+o  Support for many well known and less known algorithms and modes. (*)
+o  Support for fixlength algorithm, adjusting encrypted data length
+   even for block algorithms and modes.
+o  Support for direct file encryption.
+o  Complete inline documentation.
+o  Check parameters before passing to mcrypt library, protecting
+   agains segmentation faults.
+
+(*) mcrypt library features
+
+Disclaimer
+----------
+
+Please read the file LICENSE before using python-mcrypt.
+
+New Versions
+------------
+
+Information on how to retrieve new versions of python-mcrypt can be
+found on http://sourceforge.net/projects/python-mcrypt.
+
+Credits
+-------
+
+Please read the file AUTHORS.
+

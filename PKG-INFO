@@ -1,0 +1,12 @@
+Metadata-Version: 1.0
+Name: python-mcrypt
+Version: 1.1
+Summary: Python interface to mcrypt library
+Home-page: UNKNOWN
+Author: Gustavo Niemeyer
+Author-email: niemeyer@conectiva.com
+License: LGPL
+Description: 
+        Python interface to mcrypt library.
+        
+Platform: UNKNOWN

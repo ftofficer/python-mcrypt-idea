@@ -1,0 +1,8 @@
+This is the NEWS file of python-mcrypt.
+
+Version 1.1
+	* Fixed endline inside doc strings. This was breaking
+	  compilation on newer gcc.
+
+Version 1.0
+	* First public release
