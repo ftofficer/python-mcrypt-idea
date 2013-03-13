@@ -1702,7 +1702,7 @@ MCRYPT_*\n\
 ";
 
 DL_EXPORT(void)
-init_mcrypt(void)
+initmcrypt(void)
 {
 	PyObject *m;
 

@@ -7,21 +7,25 @@ import shutil
 try:
     from setuptools import setup, Extension
     from setuptools.command.build_ext import build_ext
+    from setuptools.cmd import Command
 except ImportError:
     from distutils.core import setup, Extension
     from distutils.command.build_ext import build_ext
+    from distutils.cmd import Command
     
 from distutils import log
 
-VERSION = "1.2"
+VERSION = "1.2.2"
 LIBMCRYPT_MODULE = 'libmcrypt-2.5.8'
 
 libmcrypt_base = os.path.join(os.path.dirname(__file__), LIBMCRYPT_MODULE)
-libmcrypt_lib_dir = os.path.join(libmcrypt_base, 'lib', '.libs')
-libmcrypt_include = os.path.join(libmcrypt_base, 'include')
 
-mcrypt_module = Extension("_mcrypt",
-                          ["_mcrypt.c"],
+libmcrypt_dist_dir = os.path.join(os.path.dirname(__file__), 'libmcrypt')
+libmcrypt_include = os.path.join(libmcrypt_dist_dir, 'include')
+libmcrypt_lib_dir = os.path.join(libmcrypt_dist_dir, 'lib')
+
+mcrypt_module = Extension("mcrypt",
+                          ["mcrypt.c"],
                           libraries=['mcrypt'],
                           library_dirs=[libmcrypt_lib_dir],
                           include_dirs=[libmcrypt_include],
@@ -29,20 +33,24 @@ mcrypt_module = Extension("_mcrypt",
 
 class build_ext_with_libmcrypt(build_ext):
     def run(self):
+        log.info('Build libmcrypt...')
         self._build_libmcrypt()
-        self._collect_libmcrypt_modules('algorithms')
-        self._collect_libmcrypt_modules('modes')
+        
         build_ext.run(self)
 
     def _build_libmcrypt(self):
         # Build libmcrypt
-        check_call(['sh', 'configure', '--enable-shared', '--enable-static'],
+        check_call(['sh', 'configure', '--prefix=%s' % libmcrypt_dist_dir,
+                    '--enable-shared', '--enable-static'],
                    cwd=libmcrypt_base)
         check_call(['make'], cwd=libmcrypt_base)
+        check_call(['make', 'install'], cwd=libmcrypt_base)
+        
 
     def _collect_libmcrypt_modules(self, name):
-        source_dir = os.path.join(libmcrypt_base, 'modules', name, '.libs')
+        source_dir = os.path.join(libmcrypt_dist_dir, )
         target_dir = os.path.join(os.path.join('mcrypt', 'modules', name))
+        log.info('Collect libmcrypt modules from %s to %s...', source_dir, target_dir)
 
         if not os.path.exists(target_dir):
             os.makedirs(target_dir)
@@ -53,7 +61,7 @@ class build_ext_with_libmcrypt(build_ext):
                 target = os.path.join(target_dir, module)
                 log.info('Collect libmcrypt module: %s => %s', source, target)
                 shutil.copyfile(source, target)
-                
+        
 
 setup(name="python-mcrypt-idea",
       version = VERSION,
@@ -66,7 +74,8 @@ setup(name="python-mcrypt-idea",
 Python interface to mcrypt library, derived from http://labix.org/python-mcrypt and added IDEA.
 """,
       packages = ['mcrypt'],
-      
+
+      include_package_data = True,
       ext_modules = [mcrypt_module],
       cmdclass = {'build_ext': build_ext_with_libmcrypt},
-      )
+    )
