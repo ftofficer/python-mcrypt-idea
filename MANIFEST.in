@@ -1,1 +1,5 @@
 include AUTHORS LICENSE NEWS README MANIFEST.in setup.py test.py _mcrypt.c
+recursive-include mcrypt/modules *.so
+recursive-include libmcrypt-2.5.8 *
+
+
