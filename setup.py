@@ -73,8 +73,6 @@ setup(name="python-mcrypt-idea",
 """
 Python interface to mcrypt library, derived from http://labix.org/python-mcrypt and added IDEA.
 """,
-      packages = ['mcrypt'],
-
       include_package_data = True,
       ext_modules = [mcrypt_module],
       cmdclass = {'build_ext': build_ext_with_libmcrypt},
