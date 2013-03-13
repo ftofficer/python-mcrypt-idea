@@ -3,3 +3,10 @@ This is the AUTHORS file of python-mcrypt.
 The mcrypt python module was developed by:
 
     Gustavo Niemeyer <niemeyer@conectiva.com>
+
+The following people contribute on the module development:
+   
+    Cong Zhang <ftofficer@ftofficer.com>
+   	Make the module self-contained, not depends on libmcrypt of system.
+	Added IDEA module (from http://www.ottolander.nl/opensource/mcrypt/mcrypt.html)
+

@@ -13,7 +13,7 @@ except ImportError:
     
 from distutils import log
 
-VERSION = "1.1"
+VERSION = "1.2"
 LIBMCRYPT_MODULE = 'libmcrypt-2.5.8'
 
 libmcrypt_base = os.path.join(os.path.dirname(__file__), LIBMCRYPT_MODULE)
@@ -55,15 +55,15 @@ class build_ext_with_libmcrypt(build_ext):
                 shutil.copyfile(source, target)
                 
 
-setup(name="python-mcrypt",
+setup(name="python-mcrypt-idea",
       version = VERSION,
-      description = "Python interface to mcrypt library",
-      author = "Gustavo Niemeyer",
-      author_email = "niemeyer@conectiva.com",
+      description = "Python interface to mcrypt library, with IDEA compile in",
+      author = "Cong Zhang",
+      author_email = "ftofficer@ftofficer.com",
       license = "LGPL",
       long_description = \
 """
-Python interface to mcrypt library.
+Python interface to mcrypt library, derived from http://labix.org/python-mcrypt and added IDEA.
 """,
       packages = ['mcrypt'],
       
