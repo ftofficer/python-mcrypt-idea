@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import os.path
-from subprocess import check_call
+from subprocess import check_call, call
 import shutil
 
 try:
@@ -20,14 +20,13 @@ LIBMCRYPT_MODULE = 'libmcrypt-2.5.8'
 
 libmcrypt_base = os.path.join(os.path.dirname(__file__), LIBMCRYPT_MODULE)
 
-libmcrypt_dist_dir = os.path.join(os.path.dirname(__file__), 'libmcrypt')
+libmcrypt_dist_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'libmcrypt'))
 libmcrypt_include = os.path.join(libmcrypt_dist_dir, 'include')
 libmcrypt_lib_dir = os.path.join(libmcrypt_dist_dir, 'lib')
 
 mcrypt_module = Extension("mcrypt",
                           ["mcrypt.c"],
-                          libraries=['mcrypt'],
-                          library_dirs=[libmcrypt_lib_dir],
+                          extra_objects=[os.path.join(libmcrypt_lib_dir, 'libmcrypt.a')],
                           include_dirs=[libmcrypt_include],
                           define_macros=[("VERSION", '"%s"'%VERSION)])
 
@@ -40,8 +39,10 @@ class build_ext_with_libmcrypt(build_ext):
 
     def _build_libmcrypt(self):
         # Build libmcrypt
+        call(['make', 'distclean'], cwd=libmcrypt_base)
         check_call(['sh', 'configure', '--prefix=%s' % libmcrypt_dist_dir,
-                    '--enable-shared', '--enable-static'],
+                    '--enable-shared', '--enable-static',
+                    '--with-pic'],
                    cwd=libmcrypt_base)
         check_call(['make'], cwd=libmcrypt_base)
         check_call(['make', 'install'], cwd=libmcrypt_base)

@@ -1,4 +1,4 @@
-include AUTHORS LICENSE NEWS README MANIFEST.in setup.py test.py _mcrypt.c
+include AUTHORS LICENSE NEWS README MANIFEST.in setup.py test.py mcrypt.c
 recursive-include libmcrypt-2.5.8 *
 
 
