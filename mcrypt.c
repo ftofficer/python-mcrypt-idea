@@ -1708,7 +1708,7 @@ initmcrypt(void)
 
 	MCRYPT_Type.ob_type = &PyType_Type;
 
-	m = Py_InitModule3("_mcrypt", mcrypt_methods, mcrypt__doc__);
+	m = Py_InitModule3("mcrypt", mcrypt_methods, mcrypt__doc__);
 
 	PyModule_AddObject(m, "__author__", PyString_FromString(__author__));
 	PyModule_AddObject(m, "__version__", PyString_FromString(VERSION));
