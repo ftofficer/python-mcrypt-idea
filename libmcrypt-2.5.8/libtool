@@ -39,7 +39,7 @@ available_tags="CXX "
 # ### BEGIN LIBTOOL CONFIG
 
 # Whether or not to build static libraries.
-build_old_libs=
+build_old_libs=yes
 
 # Assembler program.
 AS=as

@@ -200,7 +200,7 @@ check_key(MCRYPTObject *self, char *key, int key_size)
  * another hard init. Note that iv must have the size expected by the
  * algorithm. */
 static int
-init_mcrypt(MCRYPTObject *self, int type,
+_init_mcrypt(MCRYPTObject *self, int type,
 	    void *key, int key_size,
             void *iv)
 {
@@ -331,7 +331,7 @@ MCRYPT_dealloc(MCRYPTObject *self)
 {
 	if (self->thread) {
 		if (self->init != INIT_NONE) {
-			if (!init_mcrypt(self, INIT_DEINIT, NULL, 0, NULL))
+			if (!_init_mcrypt(self, INIT_DEINIT, NULL, 0, NULL))
 				PyErr_Clear();
 		}
 		mcrypt_module_close(self->thread);
@@ -471,7 +471,7 @@ MCRYPT_init(MCRYPTObject *self, PyObject *args, PyObject *kwargs)
 	if (!get_iv_from_obj(self, ivobj, &iv))
 		return NULL;
 
-	if (!init_mcrypt(self, INIT_ANY, key, key_size, iv))
+	if (!_init_mcrypt(self, INIT_ANY, key, key_size, iv))
 		return NULL;
 
 	Py_INCREF(Py_None);
@@ -491,7 +491,7 @@ uninitialized instance.\n\
 static PyObject *
 MCRYPT_reinit(MCRYPTObject *self, PyObject *args)
 {
-	if (!init_mcrypt(self, INIT_REINIT, NULL, 0, NULL))
+	if (!_init_mcrypt(self, INIT_REINIT, NULL, 0, NULL))
 		return NULL;
 
 	Py_INCREF(Py_None);
@@ -511,7 +511,7 @@ Calling this method is optional.\n\
 static PyObject *
 MCRYPT_deinit(MCRYPTObject *self, PyObject *args)
 {
-	if (!init_mcrypt(self, INIT_DEINIT, NULL, 0, NULL))
+	if (!_init_mcrypt(self, INIT_DEINIT, NULL, 0, NULL))
 		return NULL;
 
 	Py_INCREF(Py_None);
@@ -555,7 +555,7 @@ MCRYPT_encrypt(MCRYPTObject *self, PyObject *args, PyObject *kwargs)
 		fixlength = 0;
 	}
 
-	if (!init_mcrypt(self, INIT_ENCRYPT, NULL, 0, NULL))
+	if (!_init_mcrypt(self, INIT_ENCRYPT, NULL, 0, NULL))
 		return NULL;
 
 	numblocks = data_size/block_size+1;
@@ -618,7 +618,7 @@ MCRYPT_decrypt(MCRYPTObject *self, PyObject *args, PyObject *kwargs)
 		fixlength = 0;
 	}
 
-	if (!init_mcrypt(self, INIT_DECRYPT, NULL, 0, NULL))
+	if (!_init_mcrypt(self, INIT_DECRYPT, NULL, 0, NULL))
 		return NULL;
 	
 	numblocks = data_size/block_size;
@@ -687,7 +687,7 @@ MCRYPT_encrypt_file(MCRYPTObject *self, PyObject *args, PyObject *kwargs)
 					 &fixlength, &bufferblocks))
 		return NULL;
 
-	if (!init_mcrypt(self, INIT_ENCRYPT, NULL, 0, NULL))
+	if (!_init_mcrypt(self, INIT_ENCRYPT, NULL, 0, NULL))
 		return NULL;
 
 	readmeth = PyObject_GetAttrString(filein, "read");
@@ -828,7 +828,7 @@ MCRYPT_decrypt_file(MCRYPTObject *self, PyObject *args, PyObject *kwargs)
 					 &fixlength, &bufferblocks))
 		return NULL;
 
-	if (!init_mcrypt(self, INIT_DECRYPT, NULL, 0, NULL))
+	if (!_init_mcrypt(self, INIT_DECRYPT, NULL, 0, NULL))
 		return NULL;
 
 	readmeth = PyObject_GetAttrString(filein, "read");
@@ -1702,13 +1702,13 @@ MCRYPT_*\n\
 ";
 
 DL_EXPORT(void)
-initmcrypt(void)
+init_mcrypt(void)
 {
 	PyObject *m;
 
 	MCRYPT_Type.ob_type = &PyType_Type;
 
-	m = Py_InitModule3("mcrypt", mcrypt_methods, mcrypt__doc__);
+	m = Py_InitModule3("_mcrypt", mcrypt_methods, mcrypt__doc__);
 
 	PyModule_AddObject(m, "__author__", PyString_FromString(__author__));
 	PyModule_AddObject(m, "__version__", PyString_FromString(VERSION));

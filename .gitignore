@@ -33,3 +33,12 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+# C code intermediate
+*.o
+*.lo
+*.la
+config.log
+config.status
+.deps
+.libs
